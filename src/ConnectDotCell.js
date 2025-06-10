@@ -1,17 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDrag } from 'react-dnd';
-import { ArcherElement } from 'react-archer';
-import { getEmptyImage } from 'react-dnd-html5-backend';
+import React, { useEffect } from "react";
+import { useDrag } from "react-dnd";
+import { ArcherElement } from "react-archer";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
-const ItemTypes = { ROW: 'row' };
+const ItemTypes = { ROW: "row" };
 
 function ConnectDotCell({ originalId, tableId, removeRelation, relations }) {
-  const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
+  const [, drag, dragPreview] = useDrag(() => ({
     type: ItemTypes.ROW,
     item: { id: originalId, tableId }, // This is the item being dragged
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
+    collect: (monitor) => ({}),
   }));
 
   useEffect(() => {
@@ -21,7 +19,7 @@ function ConnectDotCell({ originalId, tableId, removeRelation, relations }) {
   const isConnected = relations.some(
     (r) => r.from.id === originalId || r.to.id === originalId
   );
-  const dotColor = isConnected ? 'olive' : 'gray';
+  const dotColor = isConnected ? "olive" : "gray";
 
   const handleDotClick = () => {
     if (isConnected) {
@@ -42,15 +40,22 @@ function ConnectDotCell({ originalId, tableId, removeRelation, relations }) {
 
   return (
     // The drag ref is attached to the div that acts as the drag handle (the dot container)
-    <div ref={drag} style={{ display: 'inline-block', cursor: isConnected ? 'pointer' : 'grab' }} onClick={handleDotClick}>
+    <div
+      ref={drag}
+      style={{
+        display: "inline-block",
+        cursor: isConnected ? "pointer" : "grab",
+      }}
+      onClick={handleDotClick}
+    >
       <ArcherElement id={originalId} relations={archerRelations}>
         <div
           style={{
-            width: '12px',
-            height: '12px',
+            width: "12px",
+            height: "12px",
             backgroundColor: dotColor,
-            borderRadius: '50%',
-            margin: 'auto', // Centers the dot if parent td has text-align: center
+            borderRadius: "50%",
+            margin: "auto", // Centers the dot if parent td has text-align: center
           }}
         />
       </ArcherElement>
