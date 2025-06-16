@@ -1,0 +1,41 @@
+/* Button and action bar styles */
+.action-buttons-container {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-button,
+.dropdown-toggle,
+.dropdown-menu button,
+input[type="file"]::file-selector-button {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  padding: 10px 20px;
+  min-width: 210px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.action-button:hover,
+.dropdown-toggle:hover,
+.dropdown-menu button:hover,
+input[type="file"]::file-selector-button:hover {
+  background-color: #444;
+  border-color: #777;
+  transform: translateY(-1px);
+}
+
+.action-button:active,
+.dropdown-toggle:active,
+.dropdown-menu button:active,
+input[type="file"]::file-selector-button:active {
+  transform: translateY(0px);
+  background-color: #2a2a2a;
+}
