@@ -1,9 +1,28 @@
+/* Global styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #121212; /* Dark background for the body */
+  color: #e0e0e0; /* Light text color for readability */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
 .App {
   text-align: center;
+  background-color: #1e1e1e; /* Slightly lighter dark bg for the app container */
+  min-height: 100vh;
 }
 
 .App-logo {
-  height: 10vmin; /* Reduced size from 40vmin */
+  height: 10vmin; /* Reduced size */
   pointer-events: none;
 }
 
@@ -14,14 +33,29 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  padding: 20px;
-  color: white;
-  margin-bottom: 20px;
+  background-color: #2a2a2a; 
+  padding: 15px 25px; /* Adjusted padding */
+  color: #f5f5f5; 
+  margin-bottom: 30px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  display: flex; /* For aligning title and lang switcher */
+  justify-content: space-between; /* Pushes title left, switcher right */
+  align-items: center; /* Vertically aligns items */
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.App-header h1 {
+  margin: 0;
+  margin-left: 15px; /* Space between logo and title */
+  font-size: 1.8em; /* Slightly reduced title size */
 }
 
 .App-link {
-  color: #61dafb;
+  color: #61dafb; /* Keep React blue for links, or change to a lighter blue/teal */
 }
 
 @keyframes App-logo-spin {
@@ -33,66 +67,317 @@
   }
 }
 
+/* Buttons Container */
+.action-buttons-container {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+}
+
+/* General Button Styles (Fancy, Modern, Simple) */
+.action-button, 
+.dropdown-toggle, 
+.dropdown-menu button,
+input[type="file"]::file-selector-button /* Style file input button */ {
+  background-color: #333; /* Darker button background */
+  color: #e0e0e0; /* Light text */
+  border: 1px solid #555; /* Subtle border */
+  padding: 10px 20px;
+  min-width: 210px; /* Further Increased min-width to accommodate longer Portuguese text */
+  box-sizing: border-box; /* Ensures padding and border don't add to the min-width */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow */
+}
+
+.action-button:hover, 
+.dropdown-toggle:hover, 
+.dropdown-menu button:hover,
+input[type="file"]::file-selector-button:hover {
+  background-color: #444; /* Slightly lighter on hover */
+  border-color: #777;
+  transform: translateY(-1px); /* Slight lift effect */
+}
+
+.action-button:active, 
+.dropdown-toggle:active, 
+.dropdown-menu button:active,
+input[type="file"]::file-selector-button:active {
+  transform: translateY(0px); /* Press down effect */
+  background-color: #2a2a2a;
+}
+
+
+/* CSV Uploader specific styling */
+.csv-uploader {
+  margin-bottom: 20px;
+  display: flex; /* Using flex to align label and input if we go custom */
+  flex-direction: column; /* Stack label above input */
+  align-items: center; /* Center items */
+}
+
+/* Style for the file input text (e.g., "No file chosen") - browser dependent */
+input[type="file"] {
+  color: #b0b0b0; /* Lighter text for file input status */
+}
+
+.csv-uploader label {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  padding: 10px 20px;
+  min-width: 220px; /* Match other action buttons */
+  box-sizing: border-box;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  text-align: center; /* Ensure text is centered in label */
+  margin-bottom: 10px; /* Space between label-button and hidden input */
+}
+
+.csv-uploader label:hover {
+  background-color: #444;
+  border-color: #777;
+  transform: translateY(-1px);
+}
+
+.csv-uploader label:active {
+  transform: translateY(0px);
+  background-color: #2a2a2a;
+}
+
+.csv-uploader input[type="file"] {
+  display: none; /* Hide the default file input */
+}
+
+/* CSV Layout */
 .csv-container {
   display: flex;
   justify-content: space-around;
-  padding: 20px;
+  padding: 0 20px 20px 20px; /* Adjusted padding */
+  gap: 20px; /* Gap between left and right sections */
 }
 
 .csv-section {
-  width: 48%; /* Each section takes roughly half the space */
+  width: 48%; 
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content like uploader and table title */
+  align-items: center; 
+  background-color: #2a2a2a; /* Dark background for sections */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners for sections */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* More pronounced shadow */
+  /* overflow: visible; */ /* Keep if needed for dropdowns, but portal should handle */
 }
 
-.csv-uploader {
-  margin-bottom: 20px;
+.csv-section h2 {
+  color: #f5f5f5;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+/* Table Styles */
+.table-wrapper { /* Added in CsvTable.js for scrolling */
+  width: 100%;
+  max-width: 100%; /* Ensure it doesn't exceed parent */
+  overflow-x: auto; 
+  /* overflow-y: visible; */ /* Portal handles dropdown visibility */
+  border: 1px solid #444; /* Border around the scrollable area */
+  border-radius: 6px;
 }
 
 .csv-table {
-  width: 100%; /* Table takes full width of its section */
+  width: 100%; 
   border-collapse: collapse;
-  margin-top: 10px;
+  margin-top: 0; /* Removed margin-top as .table-wrapper has border */
   font-size: 0.9em;
 }
 
 .csv-table th,
 .csv-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #444; /* Darker borders */
+  padding: 10px 12px; /* Increased padding */
   text-align: left;
-  white-space: nowrap; /* Prevent text wrapping */
-  overflow: hidden; /* Hide overflow */
-  text-overflow: ellipsis; /* Add ellipsis for overflow */
-  height: 40px; /* Consistent row height */
-  max-width: 200px; /* Prevent columns from becoming too wide, adjust as needed */
+  height: 45px; 
+  max-width: 200px; 
+  color: #c0c0c0; /* Lighter gray for table text */
 }
 
 .csv-table th {
-  background-color: #f2f2f2;
-  cursor: pointer;
+  background-color: #333; /* Header background */
+  color: #f0f0f0; /* Header text */
+  position: relative; 
+  /* overflow: visible !important; */ /* Portal handles */
 }
 
-.csv-table tr:hover {
-  background-color: #f5f5f5;
+.csv-table td {
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  background-color: #252525; /* Slightly different cell background */
 }
 
-/* Ensure ArcherContainer covers the area needed for lines */
-.archers-container {
-  width: 100%;
-  height: 100%;
-  position: relative; /* Needed for absolute positioning of lines if react-archer requires it */
+.csv-table tr:hover td {
+  background-color: #303030; /* Hover effect for rows */
 }
 
-/* Style for the connection dot */
-.connection-dot {
+/* Connected Row Styling */
+.connected-row td {
+  background-color: #3a5a40 !important; /* Darker green for connected rows, ensure it overrides hover */
+  color: #e8f5e9 !important; /* Light text for connected rows */
+}
+
+/* Connect Dot Styling */
+.connect-dot {
   width: 12px;
   height: 12px;
+  background-color: #607d8b; /* Muted blue-gray for dots */
   border-radius: 50%;
-  cursor: grab;
-  margin: auto; /* Centers the dot in the table cell */
-  display: flex; /* For centering if needed, though margin auto should work */
+  cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto; /* Center in cell */
+  transition: background-color 0.2s;
+}
+
+.connect-dot:hover {
+  background-color: #78909c; /* Lighter on hover */
+}
+
+.connect-dot.connected {
+  background-color: #a5d6a7; /* Light olive/green for connected dots */
+}
+
+
+/* Dropdown Styles */
+.dropdown { 
+  display: inline-block; 
+  position: relative; 
+  /* overflow: visible !important; */ /* Portal handles */
+}
+
+.dropdown-toggle {
+  padding: 5px 10px; /* Smaller padding for "..." button */
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+.dropdown-menu {
+  /* position, top, left, z-index are set inline by Portal JS */
+  background-color: #333; /* Dark background for dropdown */
+  border: 1px solid #555; /* Border for dropdown */
+  border-radius: 6px; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+  padding: 8px 0; 
+  margin: 0; 
+  list-style: none;
+  min-width: 220px; /* Slightly wider */
+  display: block; 
+}
+
+.dropdown-menu hr {
+  border: none;
+  border-top: 1px solid #555; /* Separator for dark theme */
+  margin: 6px 0;
+}
+
+.dropdown-menu li button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px; /* Consistent padding */
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #e0e0e0; /* Light text for items */
+  white-space: nowrap;
+  text-align: left;
+  background: none; /* Transparent background */
+  border: none; /* No border for items */
+  /* box-shadow and transform removed for menu items, keep it on main buttons */
+}
+
+.dropdown-menu li button:hover {
+  background-color: #444; /* Hover for items */
+  color: #f5f5f5; /* Brighter text on hover */
+  /* transform: none; */ /* No transform for menu items */
+}
+
+/* Ensure Archer lines are visible */
+/* ArcherContainer default strokeColor is 'gray'. This might be too dark. */
+/* Relations are 'olive'. This might be okay. */
+
+/* Spinning React Logo in header */
+/* No specific dark theme changes needed unless it clashes badly. */
+/* The default blue might provide a nice accent. */
+
+/* Ensure text selection is visible */
+::selection {
+  background: #555; /* Darker selection background */
+  color: #fff; /* White text for selection */
+}
+
+/* Language Switcher Styles */
+.language-switcher {
+  display: flex;
+  gap: 10px; /* Space between language buttons */
+}
+
+.lang-button {
+  background-color: transparent; /* Transparent background */
+  color: #a0a0a0; /* Dimmer color for non-active lang */
+  border: 1px solid #555;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  display: flex; /* To align flag and text */
+  align-items: center; /* Vertically align flag and text */
+  gap: 8px; /* Space between flag and text */
+}
+
+.lang-button svg {
+  width: 20px; /* Control flag size */
+  height: auto;
+  border-radius: 2px; /* Slightly rounded corners for flags */
+}
+
+.lang-button .lang-text {
+  /* Optional: if you want to hide text and only show flags on small screens later */
+}
+
+.lang-button:hover {
+  color: #e0e0e0;
+  background-color: #383838;
+  border-color: #777;
+}
+
+.lang-button.active {
+  color: #f5f5f5; /* Bright text for active lang */
+  background-color: #444; /* Slightly different bg for active */
+  border-color: #888;
+  font-weight: bold;
+}
+
+/* Style for dropdown toggle buttons in table headers */
+.csv-table .dropdown-toggle {
+  background-color: #555; /* Darker background for contrast or specific color */
+  color: white;
+  border: none;
+  padding: 5px 10px; /* Smaller padding */
+  font-size: 12px; /* Smaller font size */
+  border-radius: 4px; /* Smaller border radius */
+  cursor: pointer;
+  margin-left: 8px; /* Space from header text */
+  min-width: auto; /* Override the general button min-width */
+}
+
+.csv-table .dropdown-toggle:hover {
+  background-color: #777; /* Lighter on hover */
 }

@@ -43,9 +43,18 @@ function DraggableRow({
   return (
     <tr key={key} {...restRowProps} ref={drop} style={rowStyle}>
       {row.cells.map((cell) => {
+        const cellProps = cell.getCellProps();
+        const cellKey = cellProps.key; // Extract key
+        // eslint-disable-next-line no-unused-vars
+        const { key: _key, ...restCellProps } = cellProps; // Destructure to remove key from spread
+
         if (cell.column.id === "connect") {
           return (
-            <td {...cell.getCellProps()} style={{ textAlign: "center" }}>
+            <td
+              key={cellKey}
+              {...restCellProps}
+              style={{ textAlign: "center" }}
+            >
               <ConnectDotCell
                 originalId={originalId}
                 tableId={tableId}
@@ -55,7 +64,11 @@ function DraggableRow({
             </td>
           );
         }
-        return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+        return (
+          <td key={cellKey} {...restCellProps}>
+            {cell.render("Cell")}
+          </td>
+        );
       })}
     </tr>
   );
