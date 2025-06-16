@@ -219,17 +219,23 @@ input[type="file"] {
   white-space: nowrap; 
   overflow: hidden; 
   text-overflow: ellipsis; 
-  background-color: #252525; /* Slightly different cell background */
+  /*background-color: #252525; /* Slightly different cell background */
 }
 
 .csv-table tr:hover td {
   background-color: #303030; /* Hover effect for rows */
 }
 
+/* Styling for rows that are valid drop targets */
+.droppable-row-hover td {
+  background-color: #e6ffe6 !important; /* Light green to indicate droppable area */
+  color: #121212 !important; /* Ensure text is readable on light background */
+}
+
 /* Connected Row Styling */
 .connected-row td {
-  background-color: #3a5a40 !important; /* Darker green for connected rows, ensure it overrides hover */
-  color: #e8f5e9 !important; /* Light text for connected rows */
+  background-color: #2E4636 !important; /* Elegant dark green for connected rows */
+  color: #E8F5E9 !important; /* Light text for connected rows */
 }
 
 /* Connect Dot Styling */
@@ -279,6 +285,11 @@ input[type="file"] {
   list-style: none;
   min-width: 220px; /* Slightly wider */
   display: block; 
+}
+
+.dropdown-menu.open-left {
+  right: 0 !important;
+  left: auto !important;
 }
 
 .dropdown-menu hr {

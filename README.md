@@ -5,5 +5,4 @@ Este site permite realizar a comparação manual entre 2 tabelas, ligando linhas
 https://tales-k.github.io/spreadsheet-connector/
 
 
-![2 tabelas com linhas entreligadas](image-1.png)
-
+![2 tabelas com linhas entreligadas](image.png)

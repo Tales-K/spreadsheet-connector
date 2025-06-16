@@ -30,18 +30,18 @@ function DraggableRow({
     }),
   }));
 
-  const rowStyle = {
-    backgroundColor: isConnected
-      ? "lightgreen"
-      : isOver && canDrop
-      ? "#e6ffe6"
-      : "transparent",
-  };
-
   const { key, ...restRowProps } = row.getRowProps();
 
+  const classNames = [];
+  if (isConnected) {
+    classNames.push("connected-row");
+  }
+  if (isOver && canDrop) {
+    classNames.push("droppable-row-hover");
+  }
+
   return (
-    <tr key={key} {...restRowProps} ref={drop} style={rowStyle}>
+    <tr key={key} {...restRowProps} ref={drop} className={classNames.join(" ")}>
       {row.cells.map((cell) => {
         const cellProps = cell.getCellProps();
         const cellKey = cellProps.key; // Extract key

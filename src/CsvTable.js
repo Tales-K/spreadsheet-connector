@@ -17,6 +17,7 @@ function CsvTable({
 }) {
   const [showMenu, setShowMenu] = useState(null);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+  const [menuDirection, setMenuDirection] = useState("right");
   const toggleButtonRefs = useRef({});
 
   const columns = React.useMemo(() => {
@@ -65,10 +66,20 @@ function CsvTable({
       setShowMenu(null);
     } else {
       const buttonRect = event.currentTarget.getBoundingClientRect();
+      // Estimate menu width (could be improved by measuring, but 200px is safe for most cases)
+      const menuWidth = 200;
+      let left = buttonRect.left + window.scrollX;
+      let direction = "right";
+      // If the menu would overflow the viewport, open to the left
+      if (buttonRect.left + menuWidth > window.innerWidth) {
+        left = buttonRect.right - menuWidth + window.scrollX;
+        direction = "left";
+      }
       setMenuPosition({
         top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
+        left,
       });
+      setMenuDirection(direction);
       setShowMenu(columnId);
     }
   };
@@ -141,7 +152,9 @@ function CsvTable({
                             {showMenu === column.id &&
                               ReactDOM.createPortal(
                                 <ul
-                                  className="dropdown-menu show"
+                                  className={`dropdown-menu show${
+                                    menuDirection === "left" ? " open-left" : ""
+                                  }`}
                                   style={{
                                     position: "absolute",
                                     top: `${menuPosition.top}px`,
@@ -253,15 +266,21 @@ function CsvTable({
           {rows.map((row) => {
             prepareRow(row);
             const { key: rowKey, ...restRowProps } = row.getRowProps();
+            // Determine if this row is linked by checking against the relations array
+            const isLinked = relations.some(
+              (rel) =>
+                rel.from.id === row.original.id || rel.to.id === row.original.id
+            );
             return (
               <DraggableRow
-                key={rowKey} // Use the key from getRowProps
+                key={rowKey}
                 row={row}
                 tableId={tableId}
                 addRelation={addRelation}
                 removeRelation={removeRelation}
                 relations={relations}
-                {...restRowProps} // Spread the rest of the row props here
+                isConnected={isLinked} // Pass linked state
+                {...restRowProps}
               />
             );
           })}
