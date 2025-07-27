@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
-import Papa from "papaparse";
 import { formatToNumber, formatUsToUkDate } from "../utils/formattingUtils";
+import { processFile } from "../utils/fileProcessor";
+import { createRelation, relationExists, autoLinkData } from "../utils/relationsManager";
 
 export function useSpreadsheetConnector() {
   const [leftCsvData, setLeftCsvData] = useState([]);
@@ -14,47 +15,17 @@ export function useSpreadsheetConnector() {
   const [rightLinkingColumn, setRightLinkingColumn] = useState(null);
 
   const handleFileUpload = (file, side) => {
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => {
-        const headers = results.meta.fields;
-        const data = results.data.map((row, index) => ({
-          ...row,
-          id: `${side}-row-${index}`,
-        }));
-        if (side === "left") {
-          setLeftCsvData(data);
-          setLeftCsvHeaders(headers);
-        } else {
-          setRightCsvData(data);
-          setRightCsvHeaders(headers);
-        }
-        setRelations([]);
-      },
-    });
+    if (side === "left") {
+      processFile(file, side, setLeftCsvData, setLeftCsvHeaders, setRelations);
+    } else {
+      processFile(file, side, setRightCsvData, setRightCsvHeaders, setRelations);
+    }
   };
 
   const addRelation = useCallback((newRelationSource, newRelationTarget) => {
     setRelations((prevRelations) => {
-      const newRelation = {
-        from: {
-          id: newRelationSource.id,
-          anchor: newRelationSource.tableId === "left" ? "right" : "left",
-        },
-        to: {
-          id: newRelationTarget.id,
-          anchor: newRelationTarget.tableId === "left" ? "right" : "left",
-        },
-        style: { strokeColor: "#8fbc8f", strokeWidth: 2 },
-      };
-      const relationExists = prevRelations.find(
-        (r) =>
-          (r.from.id === newRelation.from.id &&
-            r.to.id === newRelation.to.id) ||
-          (r.from.id === newRelation.to.id && r.to.id === newRelation.from.id)
-      );
-      if (relationExists) return prevRelations;
+      const newRelation = createRelation(newRelationSource, newRelationTarget);
+      if (relationExists(prevRelations, newRelation)) return prevRelations;
       return [...prevRelations, newRelation];
     });
   }, []);
@@ -118,42 +89,14 @@ export function useSpreadsheetConnector() {
       alert(t("alertUploadData"));
       return;
     }
-    const relationsToAdd = [];
-    leftCsvData.forEach((leftRow) => {
-      const leftValue = leftRow[leftLinkingColumn];
-      if (leftValue == null) return;
-      rightCsvData.forEach((rightRow) => {
-        const rightValue = rightRow[rightLinkingColumn];
-        if (rightValue == null) return;
-        if (String(leftValue).trim() === String(rightValue).trim()) {
-          relationsToAdd.push({
-            source: { id: leftRow.id, tableId: "left" },
-            target: { id: rightRow.id, tableId: "right" },
-          });
-        }
-      });
-    });
+    
+    const relationsToAdd = autoLinkData(leftCsvData, rightCsvData, leftLinkingColumn, rightLinkingColumn);
+    
     setRelations((prevRelations) => {
       let updatedRelations = [...prevRelations];
       relationsToAdd.forEach((pair) => {
-        const newRelation = {
-          from: {
-            id: pair.source.id,
-            anchor: pair.source.tableId === "left" ? "right" : "left",
-          },
-          to: {
-            id: pair.target.id,
-            anchor: pair.target.tableId === "left" ? "right" : "left",
-          },
-          style: { strokeColor: "#8fbc8f", strokeWidth: 2 },
-        };
-        const relationExists = updatedRelations.find(
-          (r) =>
-            (r.from.id === newRelation.from.id &&
-              r.to.id === newRelation.to.id) ||
-            (r.from.id === newRelation.to.id && r.to.id === newRelation.from.id)
-        );
-        if (!relationExists) {
+        const newRelation = createRelation(pair.source, pair.target);
+        if (!relationExists(updatedRelations, newRelation)) {
           updatedRelations.push(newRelation);
         }
       });

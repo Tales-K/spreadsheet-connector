@@ -22,7 +22,7 @@ function CsvUploader({ onFileUpload, buttonText, tableId }) {
       {/* Hidden actual file input */}
       <input
         type="file"
-        accept=".csv"
+        accept=".csv,.ofx"
         onChange={handleFileChange}
         id={inputId}
         style={{ display: "none" }}
