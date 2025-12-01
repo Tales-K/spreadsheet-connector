@@ -21,6 +21,8 @@ function AppContent() {
     formatUpdateKey,
     leftLinkingColumn,
     rightLinkingColumn,
+    leftFileName,
+    rightFileName,
     handleFileUpload,
     addRelation,
     removeRelation,
@@ -75,6 +77,7 @@ function AppContent() {
                   onColumnAction={handleColumnAction}
                   linkingColumn={leftLinkingColumn}
                   texts={tableTexts}
+                  fileName={leftFileName}
                 />
               )}
             </div>
@@ -97,6 +100,7 @@ function AppContent() {
                   onColumnAction={handleColumnAction}
                   linkingColumn={rightLinkingColumn}
                   texts={tableTexts}
+                  fileName={rightFileName}
                 />
               )}
             </div>

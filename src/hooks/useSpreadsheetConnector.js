@@ -13,11 +13,15 @@ export function useSpreadsheetConnector() {
   const [formatUpdateKey, setFormatUpdateKey] = useState(0);
   const [leftLinkingColumn, setLeftLinkingColumn] = useState(null);
   const [rightLinkingColumn, setRightLinkingColumn] = useState(null);
+  const [leftFileName, setLeftFileName] = useState(null);
+  const [rightFileName, setRightFileName] = useState(null);
 
   const handleFileUpload = (file, side) => {
     if (side === "left") {
+      setLeftFileName(file.name);
       processFile(file, side, setLeftCsvData, setLeftCsvHeaders, setRelations);
     } else {
+      setRightFileName(file.name);
       processFile(file, side, setRightCsvData, setRightCsvHeaders, setRelations);
     }
   };
@@ -117,6 +121,8 @@ export function useSpreadsheetConnector() {
     formatUpdateKey,
     leftLinkingColumn,
     rightLinkingColumn,
+    leftFileName,
+    rightFileName,
     handleFileUpload,
     addRelation,
     removeRelation,

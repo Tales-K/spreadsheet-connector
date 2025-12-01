@@ -7,6 +7,18 @@
   border-radius: 6px;
 }
 
+.file-name-display {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  padding: 10px 15px;
+  font-size: 0.95em;
+  font-weight: 500;
+  border-bottom: 1px solid #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .csv-table {
   width: 100%;
   border-collapse: collapse;
@@ -28,6 +40,26 @@
   background-color: #333;
   color: #f0f0f0;
   position: relative;
+}
+
+/* Column resizer styles */
+.column-resizer {
+  display: inline-block;
+  background: #666;
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(50%);
+  z-index: 1;
+  touch-action: none;
+  cursor: col-resize;
+}
+
+.column-resizer:hover,
+.column-resizer.isResizing {
+  background: #888;
 }
 
 .csv-table td {

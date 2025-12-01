@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import ReactDOM from "react-dom";
-import { useTable, useSortBy } from "react-table";
+import { useTable, useSortBy, useResizeColumns, useBlockLayout } from "react-table";
 import DraggableRow from "./DraggableRow";
 
 function CsvTable({
@@ -14,6 +14,7 @@ function CsvTable({
   onColumnAction,
   linkingColumn,
   texts, // Receive texts prop for internationalization
+  fileName, // Receive fileName prop for display above the table
 }) {
   const [showMenu, setShowMenu] = useState(null);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -24,6 +25,9 @@ function CsvTable({
     const baseColumns = headers.map((header) => ({
       Header: header, // Header text comes from CSV, not translated here unless explicitly mapped
       accessor: header,
+      minWidth: 50,
+      width: 150,
+      maxWidth: 400,
     }));
     if (tableId === "right") {
       return [
@@ -31,6 +35,10 @@ function CsvTable({
           Header: texts.columnHeaderConnect || "Connect", // Use translated text
           id: "connect",
           Cell: ({ row }) => <div />,
+          disableResizing: true,
+          width: 70,
+          minWidth: 70,
+          maxWidth: 70,
         },
         ...baseColumns,
       ];
@@ -41,9 +49,22 @@ function CsvTable({
         Header: texts.columnHeaderConnect || "Connect", // Use translated text
         id: "connect",
         Cell: ({ row }) => <div />,
+        disableResizing: true,
+        width: 70,
+        minWidth: 70,
+        maxWidth: 70,
       },
     ];
   }, [headers, tableId, texts]); // Add texts to dependency array
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 50,
+      width: 150,
+      maxWidth: 400,
+    }),
+    []
+  );
 
   const {
     getTableProps,
@@ -56,8 +77,11 @@ function CsvTable({
     {
       columns,
       data,
+      defaultColumn,
     },
-    useSortBy
+    useSortBy,
+    useResizeColumns,
+    useBlockLayout
   );
 
   const handleToggleDropdown = (columnId, event) => {
@@ -112,6 +136,11 @@ function CsvTable({
       style={{ maxWidth: "100%", overflowX: "auto", overflowY: "visible" }} // Ensure full width usage
       className="table-wrapper"
     >
+      {fileName && (
+        <div className="file-name-display">
+          {fileName}
+        </div>
+      )}
       <table {...getTableProps()} className="csv-table">
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -255,6 +284,15 @@ function CsvTable({
                             : " 🔼"
                           : ""}
                       </span>
+                      {/* Column resizer handle */}
+                      {column.canResize && (
+                        <div
+                          {...column.getResizerProps()}
+                          className={`column-resizer ${
+                            column.isResizing ? "isResizing" : ""
+                          }`}
+                        />
+                      )}
                     </th>
                   );
                 })}
