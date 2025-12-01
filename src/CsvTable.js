@@ -3,6 +3,19 @@ import ReactDOM from "react-dom";
 import { useTable, useSortBy, useResizeColumns, useBlockLayout } from "react-table";
 import DraggableRow from "./DraggableRow";
 
+// Column width constraints
+const DEFAULT_COLUMN_WIDTHS = {
+  minWidth: 50,
+  width: 150,
+  maxWidth: 400,
+};
+
+const CONNECT_COLUMN_WIDTHS = {
+  width: 70,
+  minWidth: 70,
+  maxWidth: 70,
+};
+
 function CsvTable({
   headers,
   data,
@@ -25,44 +38,23 @@ function CsvTable({
     const baseColumns = headers.map((header) => ({
       Header: header, // Header text comes from CSV, not translated here unless explicitly mapped
       accessor: header,
-      minWidth: 50,
-      width: 150,
-      maxWidth: 400,
+      ...DEFAULT_COLUMN_WIDTHS,
     }));
+    const connectColumn = {
+      Header: texts.columnHeaderConnect || "Connect", // Use translated text
+      id: "connect",
+      Cell: ({ row }) => <div />,
+      disableResizing: true,
+      ...CONNECT_COLUMN_WIDTHS,
+    };
     if (tableId === "right") {
-      return [
-        {
-          Header: texts.columnHeaderConnect || "Connect", // Use translated text
-          id: "connect",
-          Cell: ({ row }) => <div />,
-          disableResizing: true,
-          width: 70,
-          minWidth: 70,
-          maxWidth: 70,
-        },
-        ...baseColumns,
-      ];
+      return [connectColumn, ...baseColumns];
     }
-    return [
-      ...baseColumns,
-      {
-        Header: texts.columnHeaderConnect || "Connect", // Use translated text
-        id: "connect",
-        Cell: ({ row }) => <div />,
-        disableResizing: true,
-        width: 70,
-        minWidth: 70,
-        maxWidth: 70,
-      },
-    ];
+    return [...baseColumns, connectColumn];
   }, [headers, tableId, texts]); // Add texts to dependency array
 
   const defaultColumn = React.useMemo(
-    () => ({
-      minWidth: 50,
-      width: 150,
-      maxWidth: 400,
-    }),
+    () => DEFAULT_COLUMN_WIDTHS,
     []
   );
 
