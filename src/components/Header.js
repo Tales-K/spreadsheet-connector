@@ -22,8 +22,8 @@ export default function Header() {
           className="lang-select"
           aria-label="Select language"
         >
-          <option value="en">{t("languageEN")} - English</option>
-          <option value="pt">{t("languagePT")} - Português</option>
+          <option value="en">🇺🇸 {t("languageEN")} - English</option>
+          <option value="pt">🇧🇷 {t("languagePT")} - Português</option>
         </select>
       </div>
     </header>

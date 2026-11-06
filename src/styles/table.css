@@ -5,6 +5,7 @@
   overflow-x: auto;
   border: 1px solid #444;
   border-radius: 6px;
+  display: block;
 }
 
 .file-name-display {
@@ -22,8 +23,10 @@
 .csv-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   margin-top: 0;
   font-size: 0.9em;
+  min-width: 100%;
 }
 
 .csv-table th,
@@ -31,9 +34,10 @@
   border: 1px solid #444;
   padding: 10px 12px;
   text-align: left;
-  height: 45px;
+  /* height: 45px; */
   max-width: 200px;
   color: #c0c0c0;
+  margin: 0;
 }
 
 .csv-table th {

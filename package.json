@@ -8,6 +8,7 @@
     "papaparse": "^5.5.3",
     "react": "^18.3.1",
     "react-archer": "^4.4.0",
+    "react-data-grid": "^7.0.0-canary.43",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
@@ -40,6 +41,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.3.0"
+    "gh-pages": "^6.3.0",
+    "source-map-loader": "^5.0.0"
   }
 }
